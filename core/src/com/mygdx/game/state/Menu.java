@@ -62,9 +62,9 @@ public class Menu extends GameState{
                 //System.out.format("Colpoint: %.2f %.2f with %.2f %.2f\n", collisionPoint.x,collisionPoint.y, normal.x, normal.y);
                 closestFraction = fraction;
                 System.out.println(point);
-                System.out.println(normal + "\n");
+                System.out.println(normal);
                 distance.add(new Tuple<Double, Vector2>((double) fraction, new Vector2(normal)));
-                return fraction;
+                return this.reportRayFixture(fixture, point, normal, fraction);
             }
             return 1;
         }
@@ -72,7 +72,7 @@ public class Menu extends GameState{
 
 
     public void createField() {
-        int size = 50;
+        int size = 60;
         BodyDef groundBodyDef;
         for(int i = 0; i < width; i++) {
             for(int j = 0; j < height; j++) {
@@ -91,7 +91,6 @@ public class Menu extends GameState{
 
                 groundBox.dispose();
             }
-            System.out.print('\n');
         }
     }
 
@@ -165,30 +164,18 @@ public class Menu extends GameState{
         distance.clear();
         double degree = Math.toDegrees(player.getAngle());
         degree -= rays/2f;
-        /*
-        float x = player.getBody().getPosition().x;
-        float y = player.getBody().getPosition().y;
-        double angle = player.getAngle();
 
-        x = (float)Math.cos(angle)*(x*4);
-        y = (float)Math.sin(angle)*(y*4);
+        System.out.println("\nstart");
 
-        //createBody(BodyDef.BodyType.StaticBody, (int) (x * PPM), (int) (y*PPM));
-
-        world.rayCast(callback, player.getBody().getPosition().x,
-                player.getBody().getPosition().y,
-                x,
-                y);*/
-        System.out.println("start");
-
-        for (double i = degree; i <= degree+(rays/2f); i++) {
+        for (double i = degree; i <= degree+rays; i++) {
             closestFraction = 1.0f;
             float x = player.getBody().getPosition().x;
             float y = player.getBody().getPosition().y;
             double angle = Math.toRadians(i);
-            x = (float)Math.cos(angle)*(x*4);
-            y = (float)Math.sin(angle)*(y*4);
+            x = (float)Math.cos(angle)*(x*5);
+            y = (float)Math.sin(angle)*(y*5);
 
+            System.out.format("Degree: %.2f, x: %.2f, y: %.2f", i, x, y);
             int size = distance.size();
             world.rayCast(callback, player.getBody().getPosition().x,
                     player.getBody().getPosition().y,
@@ -204,48 +191,8 @@ public class Menu extends GameState{
     @Override
     public void handleInput(float dt) {
             if(MyInput.isPressed(MyInput.BUTTON_SPACE)) {
-                /*
-                distance.clear();
-                double degree = Math.toDegrees(player.getAngle());
-                degree -= rays/2f;
 
-                for (double i = degree; i <= degree+(rays/2f); i++) {
-                    closestFraction = 1f;
-
-                    double x = player.getBody().getPosition().x;
-                    double y = player.getBody().getPosition().y;
-                    x =  Math.cos(i)*(x*5);
-                    y = Math.sin(i)*(y+5);
-
-                    Vector2 pos = new Vector2(player.getBody().getPosition());
-                    pos.x = player.getBody().getPosition().x + (6f/PPM)*(float)Math.cos(player.getAngle());
-                    pos.y = player.getBody().getPosition().y + (6f/PPM)*(float)Math.sin(player.getAngle());
-
-                    world.rayCast(callback, pos, new Vector2((float) x,(float) y));
-                }*/
-
-                double degree = Math.toDegrees(player.getAngle());
-                degree -= rays/2f;
-                for (double i = degree; i <= degree+rays; i++) {
-                    float x = player.getBody().getPosition().x;
-                    float y = player.getBody().getPosition().y;
-                    double angle = player.getAngle();
-                    x = (float)Math.cos(angle)*(x+0.5f);
-                    y = (float)Math.sin(angle)*(y+0.5f);
-
-                    //createBody(BodyDef.BodyType.StaticBody, (int) (x*50), (int) (y*50));
-                    //createBody(BodyDef.BodyType.StaticBody, (int)(player.getBody().getPosition().x * PPM), (int)(player.getBody().getPosition().y * PPM));
-                }
-
-                //System.out.println(distance.size());
-                /*
-                double x = player.getBody().getPosition().x;
-                x =  Math.cos(player.getAngle())*(x*5);
-                double y = player.getBody().getPosition().y;
-                y = Math.sin(player.getAngle())*(y+5);
-
-                world.rayCast(callback, player.getBody().getPosition(), new Vector2((float) x,(float) y));*/
-
+                updateRaycast();
 
             }
         if(MyInput.isDown(MyInput.BUTTON_ESCAPE)) {
@@ -257,10 +204,9 @@ public class Menu extends GameState{
     @Override
     public void update(float dt) {
         player.update(dt);
-        float closestFraction = 5.0f;
 
-        handleInput(dt);
         updateRaycast();
+        handleInput(dt);
 
         render();
     }
@@ -277,12 +223,12 @@ public class Menu extends GameState{
         int k = distance.size();
         for(Tuple<Double, Vector2> v: distance) {
             Double t = v.getX();
-            if(v.getY().x != 0 || v.getY().y == 1.0f) {
+            if(v.getY().x != 0) {
                 shapeRenderer.setColor(Color.RED);
-                shapeRenderer.rect(50 + (k * 10), (float) (t * 100) + PPM, 10, (float) Math.max((200 - 2 * PPM * t), 0));
+                shapeRenderer.rect((k * 5), (float) (t * 100) + PPM, 5, (float) Math.max((200 - 2 * PPM * t), 0));
             }else {
                 shapeRenderer.setColor(Color.ORANGE);
-                shapeRenderer.rect(50 + (k * 10), (float) (t * 100) + PPM, 10, (float) Math.max((200 - 2 * PPM * t), 0));
+                shapeRenderer.rect((k * 5), (float) (t * 100) + PPM, 5, (float) Math.max((200 - 2 * PPM * t), 0));
             }
             k--;
         }
