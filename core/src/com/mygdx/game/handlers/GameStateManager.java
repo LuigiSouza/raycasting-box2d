@@ -1,5 +1,6 @@
 package com.mygdx.game.handlers;
 
+import com.badlogic.gdx.Gdx;
 import com.mygdx.game.raycastingGame;
 import com.mygdx.game.state.GameState;
 import com.mygdx.game.state.Menu;
@@ -12,6 +13,7 @@ public class GameStateManager {
     private final Stack<GameState> gameStates;
 
     public static final int MENU = 420;
+    public static final int EXIT = 6;
 
     public GameStateManager(raycastingGame game) {
         this.game = game;
@@ -31,6 +33,7 @@ public class GameStateManager {
 
     private GameState getState(int state) {
         if(state == MENU) return new Menu(this);
+        if(state == EXIT) Gdx.app.exit();
         return null;
     }
 

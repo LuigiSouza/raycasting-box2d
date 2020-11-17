@@ -2,6 +2,7 @@ package com.mygdx.game.state;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.raycastingGame;
 import com.mygdx.game.handlers.GameStateManager;
 
@@ -10,12 +11,14 @@ public abstract class GameState {
     protected raycastingGame game;
 
     protected SpriteBatch sb;
+    protected ShapeRenderer shapeRenderer;
     protected OrthographicCamera cam;
     protected OrthographicCamera hudCam;
 
     protected GameState(GameStateManager gsm) {
         this.gsm = gsm;
         game = gsm.game();
+        shapeRenderer = game.getShapeRenderer();
         sb = game.getSpriteBatch();
         cam = game.getCam();
         hudCam = game.getHudCam();

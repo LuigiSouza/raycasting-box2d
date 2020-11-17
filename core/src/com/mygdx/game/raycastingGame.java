@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.handlers.GameStateManager;
 import com.mygdx.game.handlers.MyInput;
 import com.mygdx.game.handlers.MyInputProcessor;
@@ -14,6 +15,7 @@ import com.mygdx.game.state.GameState;
 public class raycastingGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	GameStateManager gsm;
+	ShapeRenderer shapeRenderer;
 
 	private SpriteBatch sb;
 	private OrthographicCamera cam;
@@ -32,6 +34,7 @@ public class raycastingGame extends ApplicationAdapter {
 	public void create () {
 		Gdx.input.setInputProcessor(new MyInputProcessor());
 
+		shapeRenderer = new ShapeRenderer();
 		batch = new SpriteBatch();
 		sb = new SpriteBatch();
 		cam = new OrthographicCamera();
@@ -61,6 +64,10 @@ public class raycastingGame extends ApplicationAdapter {
 
 	public SpriteBatch getSpriteBatch() {
 		return batch;
+	}
+
+	public ShapeRenderer getShapeRenderer() {
+		return shapeRenderer;
 	}
 
 	public OrthographicCamera getCam() {
