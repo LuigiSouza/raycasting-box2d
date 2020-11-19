@@ -6,5 +6,5 @@ Thats my little tests about get a raycasting game like doom, with 2d fisics but 
 ## Considerations
 Code already print walls based on rays distance between a wall and the player, but as I said, something is taking a wrong distance and taking a further distance. Not a clean code (sem tempo irmão)
 
-- Put image example
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+- Image example, should create a solid wall, but print these interspersed lines (yellow represents one direction and red the other to create depth)
+![Image](https://github.com/LuigiSouza/raycasting_box2d/blob/master/raycastTest.png?raw=true)
